@@ -1,9 +1,9 @@
-package roguelike.graphics;
+package graphics;
 
 import asciiPanel.AsciiPanel;
-import roguelike.entities.Creature;
-import roguelike.entities.Tile;
-import roguelike.world.World;
+import entities.Creature;
+import entities.Tile;
+import world.World;
 
 import java.awt.*;
 

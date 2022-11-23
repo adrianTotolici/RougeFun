@@ -1,6 +1,6 @@
-package roguelike.entities;
+package entities;
 
-import roguelike.Roguelike;
+import utils.Utils;
 
 import java.awt.*;
 import java.util.Map;
@@ -16,7 +16,7 @@ public class Tile extends Entity {
     public Tile(Map<String, String> tileData, int xpos, int ypos)
     {
     	super(tileData, xpos, ypos);
-        backgroundColor = Roguelike.stringToColor(tileData.get("backgroundColor"));
+        backgroundColor = Utils.stringToColor(tileData.get("backgroundColor"));
         blocked = Boolean.valueOf(tileData.get("blocked"));
     }
 }

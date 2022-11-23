@@ -1,7 +1,8 @@
-package roguelike.entities;
+package entities;
 
-import roguelike.world.World;
+import world.World;
 
+import java.awt.*;
 import java.util.Map;
 import java.util.Random;
 

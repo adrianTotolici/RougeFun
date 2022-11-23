@@ -1,4 +1,5 @@
 id, name, glyph, color, behaviour
 0, player, @, white, none
 1, zombie, z, green, aggressive
-2, sheep, s, white, docile
+2, sheep, s, yellow, docile
+3, sheep, s, blue, docile

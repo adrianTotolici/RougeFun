@@ -1,8 +1,8 @@
-package roguelike.ui;
+package ui;
 
 import asciiPanel.AsciiPanel;
-import roguelike.graphics.AsciiCamera;
-import roguelike.world.World;
+import graphics.AsciiCamera;
+import world.World;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +24,7 @@ public class Interface extends JFrame implements KeyListener, MouseListener {
 
 	
     public Interface(int screenWidth, int screenHeight, Rectangle mapDimensions) {
-    	super("Roguelike");
+    	super("StartGame");
     	
     	this.screenWidth = screenWidth;
     	this.screenHeight = screenHeight;
@@ -37,7 +37,7 @@ public class Interface extends JFrame implements KeyListener, MouseListener {
         super.add(terminal);
         super.addKeyListener(this);
         super.addMouseListener(this);
-        super.setSize(screenWidth*9, screenHeight*16);
+        super.setSize(screenWidth*9, screenHeight*17);
         super.setVisible(true);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.repaint();

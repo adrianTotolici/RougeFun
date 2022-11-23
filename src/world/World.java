@@ -1,8 +1,8 @@
-package roguelike.world;
+package world;
 
-import roguelike.entities.Creature;
-import roguelike.entities.Entity;
-import roguelike.entities.Tile;
+import entities.Creature;
+import entities.Entity;
+import entities.Tile;
 
 import java.awt.*;
 import java.util.HashSet;

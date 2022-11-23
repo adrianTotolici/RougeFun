@@ -1,9 +1,8 @@
-package roguelike;
-
-import roguelike.entities.Creature;
-import roguelike.ui.Interface;
-import roguelike.world.World;
-import roguelike.world.WorldBuilder;
+import entities.Creature;
+import ui.Interface;
+import utils.Constants;
+import world.World;
+import world.WorldBuilder;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -17,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Roguelike {
+public class StartGame {
 
 	private boolean isRunning;
 	private int framesPerSecond = 60;
@@ -40,17 +39,17 @@ public class Roguelike {
 	
 	private Interface ui;
 	
-	public Roguelike(int screenWidth, int screenHeight) {
-		this.screenWidth = screenWidth;
-		this.screenHeight = screenHeight;
+	public StartGame(Rectangle screen) {
+		this.screenWidth = screen.width;
+		this.screenHeight = screen.height;
 		
-		gameViewArea = new Rectangle(screenWidth, screenHeight-5);
+		gameViewArea = new Rectangle(screenWidth, screenHeight-4);
 		
 		ui = new Interface(screenWidth, screenHeight, new Rectangle(mapWidth, mapHeight));
 		
-		creatureData = loadData(Paths.get("src", "roguelike", "creatures.txt").toString());
-		tileData = loadData(Paths.get("src", "roguelike", "tiles.txt").toString());
-		itemData = loadData(Paths.get("src","roguelike",  "items.txt").toString());
+		creatureData = loadData(Paths.get("src", "utils/creatures.txt").toString());
+		tileData = loadData(Paths.get("src", "utils/tiles.txt").toString());
+		itemData = loadData(Paths.get("src", "utils/items.txt").toString());
 		
 		createWorld();
 	}
@@ -90,7 +89,7 @@ public class Roguelike {
 		player = new Creature(creatureData.get("player"), 10, 10);
 		world = new WorldBuilder(tileData, creatureData, mapWidth, mapHeight)
 				    .fill("wall")
-				    .createRandomWalkCave(12232, 10, 10, 6000)
+				    .createRandomWalkCave(15266, 10, 10, 6000)
 				    .populateWorld(10)
 					.build();
 		world.player = player;
@@ -155,7 +154,7 @@ public class Roguelike {
 	}
 	
 	public static void main(String[] args) {
-		Roguelike game = new Roguelike(80, 24);
+		StartGame game = new StartGame(Constants.smallMap);
 		game.run();
 	}
 	

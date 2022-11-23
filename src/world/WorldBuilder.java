@@ -1,7 +1,7 @@
-package roguelike.world;
+package world;
 
-import roguelike.entities.Creature;
-import roguelike.entities.Tile;
+import entities.Creature;
+import entities.Tile;
 
 import java.util.*;
 
