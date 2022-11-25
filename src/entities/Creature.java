@@ -1,6 +1,6 @@
-package roguelike.entities;
+package entities;
 
-import roguelike.world.World;
+import world.World;
 
 import java.util.Map;
 import java.util.Random;
@@ -26,18 +26,10 @@ public class Creature extends Entity {
  
     public void move(World world, int dx, int dy)
     {
-        if (world.isBlocked(x + dx, y + dy) != true)
+        if ((y + dy < world.height()) && (world.isBlocked(x + dx, y + dy) != true) && (x + dx < world.width()))
         {
             x += dx;
             y += dy;
-        } else {
-        	Entity entity = world.getEntityAt(x + dx, y + dx);
-        		
-        	if (entity instanceof Item) {
-        		useItem((Item) entity);
-        	} else if (entity instanceof Creature) {
-        		attackCreature((Creature) entity);
-        	}
         }
     }
     
@@ -63,7 +55,7 @@ public class Creature extends Entity {
     	if (behaviour.equals("docile") && performAction > 98) {
     		// walk around and flee if attacked
     		
-    		int rndNr = rnd.nextInt(3);
+    		int rndNr = rnd.nextInt(4);
     		    		
     		if (rndNr == 0) {
     			move(world, 1, 0);

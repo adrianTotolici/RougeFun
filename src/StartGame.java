@@ -1,9 +1,8 @@
-package roguelike;
-
-import roguelike.entities.Creature;
-import roguelike.ui.Interface;
-import roguelike.world.World;
-import roguelike.world.WorldBuilder;
+import entities.Creature;
+import ui.Interface;
+import utils.Constants;
+import world.World;
+import world.WorldBuilder;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -13,15 +12,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Roguelike {
+public class StartGame {
 
 	private boolean isRunning;
-	private int framesPerSecond = 60;
-	private int timePerLoop = 1000000000 / framesPerSecond;
+	private int timePerLoop = 1000000000 / Constants.FRAME_PER_SECOND;
+
+	private static StartGame INSTANCE;
 	
 	private World world;
 	private Creature player;
@@ -35,22 +36,26 @@ public class Roguelike {
 	
 	private Rectangle gameViewArea;
 	
-	private static final int mapWidth = 100;
-	private static final int mapHeight = 100;
-	
 	private Interface ui;
-	
-	public Roguelike(int screenWidth, int screenHeight) {
-		this.screenWidth = screenWidth;
-		this.screenHeight = screenHeight;
+
+	public static StartGame getInstance(Rectangle screen){
+		if ( INSTANCE == null ) {
+			INSTANCE = new StartGame(screen);
+		}
+		return INSTANCE;
+	}
+
+	public StartGame(Rectangle screen) {
+		this.screenWidth = screen.width;
+		this.screenHeight = screen.height;
 		
-		gameViewArea = new Rectangle(screenWidth, screenHeight-5);
+		gameViewArea = new Rectangle(screenWidth, screenHeight-4);
 		
-		ui = new Interface(screenWidth, screenHeight, new Rectangle(mapWidth, mapHeight));
-		
-		creatureData = loadData(Paths.get("src", "roguelike", "creatures.txt").toString());
-		tileData = loadData(Paths.get("src", "roguelike", "tiles.txt").toString());
-		itemData = loadData(Paths.get("src","roguelike",  "items.txt").toString());
+		ui = new Interface(screenWidth, screenHeight, screen);
+
+		creatureData = loadData(Constants.CREATURE_GRAPHICS_PATH);
+		tileData = loadData(Constants.TILES_GRAPHICS_PATH);
+		itemData = loadData(Constants.ITEM_GRAPHICS_PATH);
 		
 		createWorld();
 	}
@@ -87,12 +92,16 @@ public class Roguelike {
 	}
 	
 	private void createWorld(){
-		player = new Creature(creatureData.get("player"), 10, 10);
-		world = new WorldBuilder(tileData, creatureData, mapWidth, mapHeight)
-				    .fill("wall")
-				    .createRandomWalkCave(12232, 10, 10, 6000)
-				    .populateWorld(10)
-					.build();
+		player = new Creature(creatureData.get(Constants.PLAYER_ENTITY), 10, 10);
+
+		WorldBuilder worldBuilder = new WorldBuilder(tileData, creatureData,screenWidth, screenHeight);
+		worldBuilder.fill(Constants.GROUND_ROCK_TILE_ENTITY);
+		worldBuilder.addBorders(Constants.WALL_TILE_ENTITY);
+		worldBuilder.addForests(Constants.TREE_TILE_ENTITY);
+		worldBuilder.addForests(Constants.WATER_TILE_ENTITY);
+		worldBuilder.populateWorld(50);
+
+		world = worldBuilder.build();
 		world.player = player;
 		world.addEntity(player);
 	}
@@ -106,7 +115,8 @@ public class Roguelike {
 					player.move(world, -1, 0); 
 					break;
 				case KeyEvent.VK_RIGHT: 
-					player.move(world, 1, 0); break;
+					player.move(world, 1, 0);
+					break;
 				case KeyEvent.VK_UP: 
 					player.move(world, 0, -1); 
 					break;
@@ -114,8 +124,6 @@ public class Roguelike {
 					player.move(world, 0, 1); 
 					break;
 			}
-	    } else if (event instanceof MouseEvent) {
-	    	//
 	    }
 	}
 	
@@ -153,21 +161,4 @@ public class Roguelike {
 			}
 		}
 	}
-	
-	public static void main(String[] args) {
-		Roguelike game = new Roguelike(80, 24);
-		game.run();
-	}
-	
-	public static Color stringToColor(String colorString) {
-		Color color;
-		try {
-		    Field field = Color.class.getField(colorString);
-		    color = (Color)field.get(null);
-		} catch (Exception e) {
-		    color = null; // Not defined
-		}
-		return color;
-	}
-
 }

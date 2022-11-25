@@ -1,0 +1,5 @@
+id, name, glyph, color, behaviour
+0, player, @, (255;255;255), none
+1, zombie, z, (0;102;0), aggressive
+2, sheep, s, (255;255;153), docile
+3, cow, C, (255;255;255), docile

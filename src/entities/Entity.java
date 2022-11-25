@@ -1,9 +1,9 @@
-package roguelike.entities;
-
-import roguelike.Roguelike;
+package entities;
 
 import java.awt.*;
 import java.util.Map;
+
+import utils.Utils;
 
 public class Entity {
 	
@@ -25,7 +25,7 @@ public class Entity {
     	y = yPos;
         type = entityData.get("name");
         glyph = entityData.get("glyph").charAt(0);
-        color = Roguelike.stringToColor(entityData.get("color"));
+        color = Utils.stringRgbToColor(entityData.get("color"));
     }
 
 }

@@ -1,8 +1,9 @@
-package roguelike.world;
+package world;
 
-import roguelike.entities.Creature;
-import roguelike.entities.Entity;
-import roguelike.entities.Tile;
+import entities.Creature;
+import entities.Entity;
+import entities.Tile;
+import utils.Constants;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -18,12 +19,6 @@ public class World {
 	
 	public int width() { return width; }
 	public int height() { return height; }
-	
-	public World(Tile[][] tiles){
-		this.tiles = tiles;
-		this.width = tiles.length;
-		this.height = tiles[0].length;
-	}
 	
 	public World(Tile[][] tiles, Set<Creature> creatures){
 		this.creatures = new HashSet<>();
@@ -44,18 +39,6 @@ public class World {
 			return tiles[x][y];
 	}
 	
-	public char glyph(int x, int y){
-		return tile(x, y).getGlyph();
-	}
-	
-	public Color glyphColor(int x, int y){
-		return tile(x, y).getColor();
-	}	
-	
-	public Color backgroundColor(int x, int y){
-		return tile(x, y).getBackgroundColor();
-	}
-	
 	public Entity getEntityAt(int x, int y) {
 		return creatures.stream()
 				.filter(entity -> entity.getX() == x && entity.getY() == y)
@@ -69,7 +52,7 @@ public class World {
 	
 	public void update() {
 		creatures.stream()
-		.filter(creature -> creature.getType() != "player")
+		.filter(creature -> creature.getType() != Constants.PLAYER_ENTITY)
 		.forEach(creature -> creature.update(this));
 	}
 	
