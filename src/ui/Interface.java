@@ -15,23 +15,18 @@ public class Interface extends JFrame implements KeyListener, MouseListener {
 
 	private static final long serialVersionUID = 6408617006915516474L;
 	
-	private AsciiPanel terminal;
+	private final AsciiPanel terminal;
 	private AsciiCamera camera;
 	private Queue<InputEvent> inputQueue;
-	
-	private int screenWidth;
-	private int screenHeight;
 
-	
-    public Interface(int screenWidth, int screenHeight, Rectangle mapDimensions) {
+
+	public Interface(int screenWidth, int screenHeight, Rectangle mapDimensions) {
     	super("StartGame");
-    	
-    	this.screenWidth = screenWidth;
-    	this.screenHeight = screenHeight;
-    	inputQueue = new LinkedList<>();
+
+		inputQueue = new LinkedList<>();
 
     	Rectangle gameViewArea = new Rectangle(screenWidth, screenHeight-5);
-    	terminal = new AsciiPanel(screenWidth, screenHeight);
+    	terminal = new AsciiPanel(screenWidth, screenHeight, null);
     	camera = new AsciiCamera(mapDimensions, gameViewArea);
     	
         super.add(terminal);
@@ -41,10 +36,6 @@ public class Interface extends JFrame implements KeyListener, MouseListener {
         super.setVisible(true);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.repaint();
-    }
-    
-    public AsciiPanel getTerminal() {
-    	return terminal;
     }
     
     public InputEvent getNextInput() {
@@ -65,7 +56,7 @@ public class Interface extends JFrame implements KeyListener, MouseListener {
 	}
 
 	public void drawDynamicLegend(Rectangle gameViewArea, World world, Map<String, Map<String, String>> tileData, Map<String, Map<String, String>> creatureData) {
-		int x = 5;
+		int x = 10;
 		int y = gameViewArea.height;
 		char glyph;
 		
@@ -75,21 +66,21 @@ public class Interface extends JFrame implements KeyListener, MouseListener {
 			y += 1;
 			
 			if (y == gameViewArea.height+2) {
-				x += 15;
+				x += 20;
 				y = gameViewArea.height;
 			}
 		}
 		
-		for (String creatureType : world.getCreatureTypesInArea(gameViewArea)) {
-			glyph = creatureData.get(creatureType).get("glyph").charAt(0);
-			terminal.write(glyph + "   " + creatureType, x, y);
-			y += 1;
-			
-			if (y == gameViewArea.height+5) {
-				x += 15;
-				y = gameViewArea.height;
-			}
-		}
+//		for (String creatureType : world.getCreatureTypesInArea(gameViewArea)) {
+//			glyph = creatureData.get(creatureType).get("glyph").charAt(0);
+//			terminal.write(glyph + "   " + creatureType, x, y);
+//			y += 1;
+//
+//			if (y == gameViewArea.height+5) {
+//				x += 15;
+//				y = gameViewArea.height;
+//			}
+//		}
 	}
 	
 	@Override

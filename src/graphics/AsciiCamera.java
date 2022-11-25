@@ -12,8 +12,6 @@ public class AsciiCamera {
     int screenWidth;
     int screenHeight;
 
-    int direction = 0;
-
     int mapWidth;
     int mapHeight;
 
@@ -33,29 +31,12 @@ public class AsciiCamera {
         int spy = Math.max(0, Math.min(yfocus - screenHeight / 2, mapHeight - screenHeight));
         return new Point(spx, spy);
     }
-    
-    /*public Tile GetObjectAt(World world, int x, int y)
-    {
-        Point playerPosition = GetScreenCoords(world.player.getX(), world.player.getY(), world.player.getX(), world.player.getY());
-
-        int tileX = world.player.getX() + (x - playerPosition.x);
-        int tileY = world.player.getY() + (y - playerPosition.y);
-        return world.tile(tileX, tileY);
-    }*/
-
-    public void Rotate(int direction)
-    {
-        this.direction = direction;
-    }
 
     public void lookAt(AsciiPanel terminal, World world, int xfocus, int yfocus)
     {
         Tile tile;
         Point origin;
-        
-        //screenWidth = terminal.getWidthInCharacters();
-        //screenHeight = terminal.getHeightInCharacters();
-        
+
         origin = GetCameraOrigin(xfocus, yfocus);
         
 		for (int x = 0; x < screenWidth; x++){

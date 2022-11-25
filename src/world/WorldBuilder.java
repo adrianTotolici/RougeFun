@@ -2,6 +2,7 @@ package world;
 
 import entities.Creature;
 import entities.Tile;
+import utils.Constants;
 
 import java.util.*;
 
@@ -35,33 +36,24 @@ public class WorldBuilder {
 		return new Creature(creatureData.get(type), x, y);
 	}
 	
-	public WorldBuilder fill(String tileType) {
+	public WorldBuilder fill(String tileMain) {
 		for (int x=0; x < width; x++) {
 			for (int y=0; y < height; y++) {
-				tiles[x][y] = new Tile(tileData.get(tileType), x, y);
+				tiles[x][y] = new Tile(tileData.get(tileMain), x, y);
 			}
 		}
 		return this;
 	}
 	
-	public WorldBuilder addBorders() {
-		for (int x=0; x<width; x++) {
-			tiles[x][0] = createTile("wall", x, 0);
-			tiles[x][height-1] = createTile("wall", x, height-1);
+	public WorldBuilder addBorders(String borderTile) {
+		for (int x=0; x<width-3; x++) {
+			tiles[x][0] = createTile(borderTile, x, 0);
+			tiles[x][height-1] = createTile(borderTile, x, height-1);
 		}
 		
 		for (int y=0; y<height; y++) {
-			tiles[0][y] = createTile("wall", 0, y);
-			tiles[width-1][y] = createTile("wall", width-1, y);
-		}
-		return this;
-	}
-	
-	public WorldBuilder carveOutRoom(int topX, int topY, int width, int height) {
-		for (int x=topX; x < topX+width; x++) {
-			for (int y=topY; y < topY+height; y++) {
-				tiles[x][y] = createTile("ground", x, y);
-			}
+			tiles[0][y] = createTile(borderTile, 0, y);
+			tiles[width-3][y] = createTile(borderTile, width-4, y);
 		}
 		return this;
 	}
@@ -74,12 +66,12 @@ public class WorldBuilder {
 		for (int i=0; i < nrOfCreatures; i++) {
 			
 			do {
-				rndX = rnd.nextInt(width);
+				rndX = rnd.nextInt(width-2);
 				rndY = rnd.nextInt(height);
 			} while (tiles[rndX][rndY].isBlocked());
 			
 			List<String> creatureTypes = new ArrayList<String>(creatureData.keySet());
-			creatureTypes.remove("player");
+			creatureTypes.remove(Constants.PLAYER_ENTITY);
 			String creatureType = creatureTypes.get(rnd.nextInt(creatureTypes.size()));
 			
 			creatures.add(createCreature(creatureType, rndX, rndY));
@@ -88,28 +80,36 @@ public class WorldBuilder {
 		
 		return this;
 	}
-	
-	public WorldBuilder createRandomWalkCave(int seed, int startX, int startY, int length) {
-		Random rnd = new Random(seed);
-		int direction;
-		int x = startX;
-		int y = startY;
-		
-		for (int i=0; i<length; i++) {
-			direction = rnd.nextInt(4);
-			if (direction == 0 && (x+1) < (width-1)) {
-				x += 1;
-			} else if (direction == 1 && (x-1) > 0) {
-				x -= 1;
-			} else if (direction == 2 && (y+1) < (height-1)) {
-				y += 1;
-			} else if (direction == 3 && (y-1) > 0) {
-				y -= 1;
-			}
-			
-			tiles[x][y] = createTile("ground", x, y);
-		}
 
+	public WorldBuilder addForests(String treeTile){
+		Random rnd = new Random();
+
+		int rndNrForest = rnd.nextInt(20);
+		for (int i=0; i<rndNrForest; i++) {
+			int forestPosX = rnd.nextInt(width - 2);
+			int forestPosY = rnd.nextInt(height);
+			int rndForestSize = rnd.nextInt(3)+1;
+
+			for (int j=rndForestSize; j>0; j--) {
+				int treeNumber = rnd.nextInt((10+(j*5))-(5+(j*5)))+(5+(j*5));
+				for (int z=0; z<treeNumber; z++){
+					boolean placeTree = true;
+					while (placeTree) {
+						int trePosX = rnd.nextInt((j*2)+2)-2;
+						int trePosY = rnd.nextInt((j*2)+2)-2;
+						if ((forestPosY+trePosY>0) && (forestPosX+trePosX>0) && (forestPosY+trePosY<Constants.WINDOW_SIZE.width-4) && (forestPosX+trePosX<Constants.WINDOW_SIZE.height-4)) {
+							System.out.println("trePosX  = "+forestPosY+trePosX+" trePosY  = "+forestPosY+trePosY);
+							if (!tiles[forestPosY + trePosX][forestPosY + trePosY].isBlocked()) {
+								tiles[forestPosX + trePosX][forestPosY + trePosY] = createTile(treeTile, forestPosX + trePosX, forestPosY + trePosY);
+
+							}
+
+						}
+						placeTree = false;
+					}
+				}
+			}
+		}
 		return this;
 	}
 	

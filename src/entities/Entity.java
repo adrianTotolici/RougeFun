@@ -25,7 +25,7 @@ public class Entity {
     	y = yPos;
         type = entityData.get("name");
         glyph = entityData.get("glyph").charAt(0);
-        color = Utils.stringToColor(entityData.get("color"));
+        color = Utils.stringRgbToColor(entityData.get("color"));
     }
 
 }
