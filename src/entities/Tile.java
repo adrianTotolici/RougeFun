@@ -16,7 +16,7 @@ public class Tile extends Entity {
     public Tile(Map<String, String> tileData, int xpos, int ypos)
     {
     	super(tileData, xpos, ypos);
-        backgroundColor = Utils.stringToColor(tileData.get("backgroundColor"));
+        backgroundColor = Utils.stringRgbToColor(tileData.get("backgroundColor"));
         blocked = Boolean.valueOf(tileData.get("blocked"));
     }
 }

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.CodeSigner;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,8 +98,8 @@ public class StartGame {
 		WorldBuilder worldBuilder = new WorldBuilder(tileData, creatureData,screenWidth, screenHeight);
 		worldBuilder.fill(Constants.GROUND_ROCK_TILE_ENTITY);
 		worldBuilder.addBorders(Constants.WALL_TILE_ENTITY);
-		worldBuilder.addForests(Constants.TREE_TILE_ENTITY);
-		worldBuilder.addForests(Constants.WATER_TILE_ENTITY);
+		worldBuilder.addForests(Constants.TREE_TILE_ENTITY, Constants.MAX_FOREST_NUMBER);
+		worldBuilder.addLakes(Constants.WATER_TILE_ENTITY, Constants.MAX_LAKE_NUMBER);
 		worldBuilder.populateWorld(50);
 
 		world = worldBuilder.build();

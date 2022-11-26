@@ -7,6 +7,8 @@ public class Constants {
 
     //Game Settings
     public static final int FRAME_PER_SECOND = 60;
+    public static final int MAX_FOREST_NUMBER = 20;
+    public static final int MAX_LAKE_NUMBER = 5;
 
     // Map size
     public static final Rectangle WINDOW_SIZE = new Rectangle(200,60);

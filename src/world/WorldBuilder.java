@@ -81,10 +81,10 @@ public class WorldBuilder {
 		return this;
 	}
 
-	public WorldBuilder addForests(String treeTile){
+	public WorldBuilder addForests(String treeTile, int maxForestNumber){
 		Random rnd = new Random();
 
-		int rndNrForest = rnd.nextInt(20);
+		int rndNrForest = rnd.nextInt(maxForestNumber)+1;
 		for (int i=0; i<rndNrForest; i++) {
 			int forestPosX = rnd.nextInt(width - 2);
 			int forestPosY = rnd.nextInt(height);
@@ -97,22 +97,71 @@ public class WorldBuilder {
 					while (placeTree) {
 						int trePosX = rnd.nextInt((j*2)+2)-2;
 						int trePosY = rnd.nextInt((j*2)+2)-2;
-						if ((forestPosY+trePosY>0) && (forestPosX+trePosX>0) && (forestPosY+trePosY<Constants.WINDOW_SIZE.width-4) && (forestPosX+trePosX<Constants.WINDOW_SIZE.height-4)) {
-							System.out.println("trePosX  = "+forestPosY+trePosX+" trePosY  = "+forestPosY+trePosY);
-							if (!tiles[forestPosY + trePosX][forestPosY + trePosY].isBlocked()) {
-								tiles[forestPosX + trePosX][forestPosY + trePosY] = createTile(treeTile, forestPosX + trePosX, forestPosY + trePosY);
-
-							}
-
+						if ((forestPosY+trePosY>0) && (forestPosX+trePosX>0) && (forestPosY+trePosY<height-1) && (forestPosX+trePosX<width-3)) {
+							tiles[forestPosX + trePosX][forestPosY + trePosY] = createTile(treeTile, forestPosX + trePosX, forestPosY + trePosY);
+							placeTree = false;
 						}
-						placeTree = false;
+
 					}
 				}
 			}
 		}
 		return this;
 	}
-	
+
+	public WorldBuilder addLakes(String waterTile, int maxLakeNumber){
+		Random rnd = new Random();
+		int lakeNumber = rnd.nextInt(maxLakeNumber)+1;
+
+		for (int lake=0; lake<lakeNumber; lake++) {
+			int lakePosX = rnd.nextInt(width - 2);
+			int lakePosY = rnd.nextInt(height);
+
+			int rndLakeSizeES = rnd.nextInt(4) + 2;
+			int rndLakeSizeEN = rnd.nextInt(4) + 2;
+			int rndLakeSizeWN = rnd.nextInt(4) + 2;
+			int rndLakeSizeWS = rnd.nextInt(4) + 2;
+
+			for (int x = 0; x < rndLakeSizeES; x++) {
+				int rndLakeE = rnd.nextInt(4) + 2;
+				for (int y = 0; y < rndLakeE; y++) {
+					if ((lakePosY+y>0) && (lakePosX+x>0) && (lakePosY+y<height-1) && (lakePosX+x<width-3)) {
+						tiles[lakePosX + x][lakePosY + y] = createTile(waterTile, lakePosX + x, lakePosY + y);
+					}
+				}
+			}
+
+			for (int x = 0; x < rndLakeSizeEN; x++) {
+				int rndLakeE = rnd.nextInt(4) + 2;
+				for (int y = 0; y < rndLakeE; y++) {
+					if ((lakePosY + y > 0) && (lakePosX - x > 0) && (lakePosY + y < height-1) && (lakePosX - x < width - 3)) {
+						tiles[lakePosX - x][lakePosY + y] = createTile(waterTile, lakePosX - x, lakePosY + y);
+					}
+				}
+			}
+
+			for (int x = 0; x < rndLakeSizeWN; x++) {
+				int rndLakeE = rnd.nextInt(4) + 2;
+				for (int y = 0; y < rndLakeE; y++) {
+					if ((lakePosY-y>0) && (lakePosX-x>0) && (lakePosY-y<height-1) && (lakePosX-x<width-3)) {
+						tiles[lakePosX - x][lakePosY - y] = createTile(waterTile, lakePosX - x, lakePosY - y);
+					}
+				}
+			}
+
+			for (int x = 0; x < rndLakeSizeWS; x++) {
+				int rndLakeE = rnd.nextInt(4) + 2;
+				for (int y = 0; y < rndLakeE; y++) {
+					if ((lakePosY-y>0) && (lakePosX+x>0) && (lakePosY-y<height-1) && (lakePosX+x<width-3)) {
+						tiles[lakePosX + x][lakePosY - y] = createTile(waterTile, lakePosX + x, lakePosY - y);
+					}
+				}
+			}
+		}
+
+		return this;
+	}
+
 	public World build() {
 		return new World(tiles, creatures);
 	}
