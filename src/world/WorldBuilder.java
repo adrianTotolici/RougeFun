@@ -158,7 +158,6 @@ public class WorldBuilder {
 				}
 			}
 		}
-
 		return this;
 	}
 
