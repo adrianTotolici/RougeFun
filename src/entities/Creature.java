@@ -7,27 +7,33 @@ import java.util.Random;
 
 public class Creature extends Entity {
 
-    private int hitpoints;
+    private int hitpoints = 0;
     private String behaviour;
+    private int power = 0;
     
     public Creature(Map<String, String> creatureData, int x, int y)
     {
         super(creatureData, x, y);
         behaviour = creatureData.get("behaviour");
+        hitpoints = Integer.parseInt(creatureData.get("life"));
+        power = Integer.parseInt(creatureData.get("power"));
     }
     
-    private int getHitpoints() {
+    public int getHitpoints() {
     	return hitpoints;
     }
-    
+
+    public int getPower() {
+        return power;
+    }
+
     private void setHitpoints(int amount) {
-		hitpoints -= 10;
+		hitpoints += amount;
 	}
  
     public void move(World world, int dx, int dy)
     {
-        if ((y + dy < world.height()) && (world.isBlocked(x + dx, y + dy) != true) && (x + dx < world.width()))
-        {
+        if ((y + dy < world.height()-1) && (x + dx < world.width())) {
             x += dx;
             y += dy;
         }
@@ -39,8 +45,8 @@ public class Creature extends Entity {
     	}
     }
     
-    public void attackCreature(Creature creature) {
-    	creature.setHitpoints(-50);
+    public void attackCreature(Creature creature, int attackPower) {
+    	creature.setHitpoints(-attackPower);
     }
 
 	public void moveTo(World world, int x, int y)
@@ -72,4 +78,6 @@ public class Creature extends Entity {
     	}
 
     }
+
+
 }

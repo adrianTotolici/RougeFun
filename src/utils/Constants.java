@@ -20,6 +20,9 @@ public class Constants {
 
     // entity names
     public static final String PLAYER_ENTITY = "player";
+    public static final String SHEEP_ENTITY = "sheep";
+    public static final String ZOMBIE_ENTITY = "zombie";
+    public static final String COW_ENTITY = "cow";
 
     // entity tile names
     public static final String WALL_TILE_ENTITY = "wall";

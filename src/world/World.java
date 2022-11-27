@@ -31,6 +31,10 @@ public class World {
 	public void addEntity(Creature creature) {
 		this.creatures.add(creature);
 	}
+
+	public void removeEntity(Creature creature){
+		this.creatures.remove(creature);
+	}
 	
 	public Tile tile(int x, int y){
 		if (x < 0 || x >= width || y < 0 || y >= height)

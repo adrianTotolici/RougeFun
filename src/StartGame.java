@@ -1,4 +1,5 @@
 import entities.Creature;
+import entities.Entity;
 import ui.Interface;
 import utils.Constants;
 import world.World;
@@ -112,17 +113,17 @@ public class StartGame {
 	    if (event instanceof KeyEvent) {
 	    	KeyEvent keypress = (KeyEvent)event;
 	    	switch (keypress.getKeyCode()){
-				case KeyEvent.VK_LEFT: 
-					player.move(world, -1, 0); 
+				case KeyEvent.VK_LEFT:
+					checkAction(player, -1, 0);
 					break;
-				case KeyEvent.VK_RIGHT: 
-					player.move(world, 1, 0);
+				case KeyEvent.VK_RIGHT:
+					checkAction(player, 1,0);
 					break;
-				case KeyEvent.VK_UP: 
-					player.move(world, 0, -1); 
+				case KeyEvent.VK_UP:
+					checkAction(player, 0, -1);
 					break;
-				case KeyEvent.VK_DOWN: 
-					player.move(world, 0, 1); 
+				case KeyEvent.VK_DOWN:
+					checkAction(player, 0, 1);
 					break;
 			}
 	    }
@@ -158,6 +159,35 @@ public class StartGame {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void checkAction(Creature creature, int dx, int dy){
+		if (!world.isBlocked(creature.getX() + dx, creature.getY() + dy)){
+			creature.move(world, dx, dy);
+		}else {
+			Entity entityAt = world.getEntityAt(creature.getX()+dx, creature.getY()+dy);
+			if (entityAt != null) {
+				boolean atkCreature;
+				switch (entityAt.getType()) {
+					case Constants.SHEEP_ENTITY:
+					case Constants.ZOMBIE_ENTITY:
+					case Constants.COW_ENTITY:
+						atkCreature = true;
+						break;
+					default:
+						atkCreature = false;
+
+				}
+				if (atkCreature) {
+					creature.attackCreature((Creature) entityAt, creature.getPower());
+					int hitpoints = ((Creature) entityAt).getHitpoints();
+					System.out.println(entityAt.getType() + " life = " + hitpoints);
+					if (hitpoints <= 0) {
+						world.removeEntity((Creature) entityAt);
+					}
 				}
 			}
 		}

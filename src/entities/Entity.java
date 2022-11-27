@@ -27,5 +27,4 @@ public class Entity {
         glyph = entityData.get("glyph").charAt(0);
         color = Utils.stringRgbToColor(entityData.get("color"));
     }
-
 }
